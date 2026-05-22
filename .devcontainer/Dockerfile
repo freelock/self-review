@@ -25,7 +25,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   vim \
   tree \
   python3-yaml \
-  tmux \
   libxml2-utils \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -42,8 +41,14 @@ RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhisto
   && chown -R $USERNAME /commandhistory
 
 # Pre-create directories that will be needed for bind mounts
-RUN mkdir -p /home/$USERNAME/.config/opencode && chown -R $USERNAME:$USERNAME /home/$USERNAME/.config/opencode
-RUN mkdir -p /home/$USERNAME/.local/share/opencode && chown -R $USERNAME:$USERNAME /home/$USERNAME/.local/share/opencode
+RUN mkdir -p \
+    /home/$USERNAME/.config/opencode \
+    /home/$USERNAME/.local/share/opencode \
+    /home/$USERNAME/.local/share/claude \
+    /home/$USERNAME/.local/state \
+    /home/$USERNAME/.local/bin \
+    /home/$USERNAME/.claude \
+  && chown -R $USERNAME:$USERNAME /home/$USERNAME/.config /home/$USERNAME/.local /home/$USERNAME/.claude
 
 # Set `DEVCONTAINER` environment variable to help with orientation
 ENV DEVCONTAINER=true
@@ -88,9 +93,7 @@ USER node
 
 # Install global packages
 ENV NPM_CONFIG_PREFIX=/usr/local/share/npm-global
-ENV PATH=$PATH:/usr/local/share/npm-global/bin:/home/node/.local/bin
-ENV PROMPT_COMMAND='history -a'
-ENV HISTFILE=/commandhistory/.bash_history
+ENV PATH=$PATH:/usr/local/share/npm-global/bin
 
 # Set the default editor and visual
 ENV EDITOR=vim
@@ -98,3 +101,6 @@ ENV VISUAL=vim
 
 # Install OpenCode
 RUN curl -fsSL https://opencode.ai/install | bash
+
+# Install Claude Code
+RUN curl -fsSL https://claude.ai/install.sh | bash

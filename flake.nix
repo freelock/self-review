@@ -249,7 +249,7 @@ PLUGINS
           meta = {
             description = "GitHub-style PR review UI for local git diffs";
             homepage = "https://github.com/e0ipso/self-review";
-            license = lib.licenses.mit;
+            license = lib.licenses.unfree; # package.json says MIT but LICENSE file is proprietary — pending upstream clarification
             platforms = [
               "x86_64-linux"
               "aarch64-linux"

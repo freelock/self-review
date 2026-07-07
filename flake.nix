@@ -66,7 +66,7 @@
       mkSelfReview =
         system:
         let
-          pkgs = import nixpkgs { inherit system; };
+          pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
           npmArch = npmArchForSystem.${system};
 
           # Match the Electron major version this project actually declares
@@ -274,7 +274,7 @@ PLUGINS
       devShells = forAllSystems (
         system:
         let
-          pkgs = import nixpkgs { inherit system; };
+          pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
           electronPkg = pkgs."electron_${electronMajor}";
         in
         {

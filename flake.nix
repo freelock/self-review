@@ -31,7 +31,7 @@
       mkSelfReview =
         system:
         let
-          pkgs = import nixpkgs { inherit system; };
+          pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
           arch = archForSystem.${system};
         in
         pkgs.stdenv.mkDerivation {
@@ -141,7 +141,7 @@
       devShells = forAllSystems (
         system:
         let
-          pkgs = import nixpkgs { inherit system; };
+          pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
           electronPkg = pkgs."electron_${electronMajor}";
         in
         {
